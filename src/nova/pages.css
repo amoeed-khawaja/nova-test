@@ -1,0 +1,158 @@
+/* Styles for the multi-page routes (stories, register, partner). */
+
+.story-card {
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+.story-card::after {
+  content: "Read the story →";
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  margin-top: 14px;
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+.story-card:hover::after { opacity: 1; }
+
+.page-top { padding-top: 128px; }
+
+.crumbs {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 18px;
+  display: inline-flex;
+  gap: 8px;
+}
+.crumbs a { color: var(--cyan); }
+
+.story-hero {
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin: 30px 0 42px;
+  position: relative;
+}
+.story-hero img { width: 100%; height: auto; display: block; }
+
+.prose { max-width: 760px; }
+.prose h1 { font-size: clamp(30px, 4.6vw, 52px); }
+.prose h2 { font-size: clamp(22px, 2.6vw, 30px); margin: 40px 0 14px; }
+.prose p { color: var(--dim); font-size: 16.5px; margin-top: 16px; }
+.prose ul { margin: 16px 0 0 18px; color: var(--dim); font-size: 16px; }
+.prose li { margin-bottom: 8px; }
+.prose .lead { color: var(--text); font-size: 18.5px; }
+
+.figure { margin: 34px 0; }
+.figure img {
+  width: 100%; height: auto; display: block;
+  border-radius: 20px; border: 1px solid var(--border);
+}
+.figure figcaption {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; color: var(--dim); margin-top: 10px; letter-spacing: 0.05em;
+}
+
+.pullquote {
+  border-left: 2px solid var(--violet);
+  padding: 6px 0 6px 20px;
+  margin: 34px 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 28px 0 8px;
+}
+.fact {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 20px;
+}
+.fact .k {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan);
+}
+.fact .v { font-family: "Space Grotesk", sans-serif; font-size: 17px; margin-top: 8px; }
+
+.story-nav { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 46px; }
+
+.form-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 30px;
+  backdrop-filter: blur(8px);
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+@media (max-width: 700px) { .form-grid { grid-template-columns: 1fr; } }
+.field select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px 16px;
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  font-size: 14.5px;
+  appearance: none;
+}
+.field select option { background: #0d0d12; color: #fff; }
+.field select:focus { outline: 1px solid var(--violet); }
+
+.split { display: grid; grid-template-columns: 1fr 1.15fr; gap: 44px; align-items: start; }
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+
+.checklist { list-style: none; margin: 20px 0 0; padding: 0; }
+.checklist li {
+  color: var(--dim); font-size: 15px; padding-left: 22px; position: relative; margin-bottom: 12px;
+}
+.checklist li::before {
+  content: "◈"; position: absolute; left: 0; color: var(--cyan); font-size: 11px; top: 3px;
+}
+
+.tier-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.tier-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 26px;
+}
+.tier-card .amt {
+  font-family: "Space Grotesk", sans-serif; font-size: 24px;
+  background: linear-gradient(135deg, var(--violet), var(--cyan));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin: 6px 0 12px;
+}
+.tier-card ul { list-style: none; padding: 0; margin: 0; }
+.tier-card li { color: var(--dim); font-size: 13.5px; margin-bottom: 8px; }
+
+.story-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+.story-index a {
+  display: block; background: var(--panel); border: 1px solid var(--border);
+  border-radius: 22px; overflow: hidden; transition: border-color 0.2s, transform 0.2s;
+}
+.story-index a:hover { border-color: var(--violet); transform: translateY(-3px); }
+.story-index img { width: 100%; height: 168px; object-fit: cover; display: block; }
+.story-index .body { padding: 22px 24px 26px; }
+.story-index h3 { font-size: 18px; margin: 8px 0; }
+.story-index p { color: var(--dim); font-size: 14px; }
+
+/* Custom cursor is a home-page effect only; other routes keep a normal cursor. */
+body { cursor: auto; }
+body.nova-cursor { cursor: none; }
+body:not(.nova-cursor) .btn,
+body:not(.nova-cursor) .arrow-btn,
+body:not(.nova-cursor) a,
+body:not(.nova-cursor) button { cursor: pointer; }
+body:not(.nova-cursor) .field input,
+body:not(.nova-cursor) .field textarea { cursor: auto; }
+body:not(.nova-cursor) .cur-dot,
+body:not(.nova-cursor) .cur-ring { display: none; }
