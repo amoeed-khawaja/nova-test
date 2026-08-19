@@ -29,7 +29,6 @@ function Index() {
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     document.body.classList.add("nova-cursor");
     const cleanup = initNova();
@@ -67,4 +66,3 @@ function Index() {
     <div ref={ref} className="nova-home" dangerouslySetInnerHTML={{ __html: HOME_HTML }} />
   );
 }
-
