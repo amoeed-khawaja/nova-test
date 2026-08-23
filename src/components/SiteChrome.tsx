@@ -32,6 +32,9 @@ export function SiteHeader() {
           <button className="mobbtn" onClick={() => setOpen((v) => !v)}>
             Menu
           </button>
+          <Link className="cta-ghost magnet" to="/nexus">
+            NEXUS
+          </Link>
           <Link className="cta magnet" to="/register">
             Register
           </Link>
@@ -44,6 +47,7 @@ export function SiteHeader() {
         <a href="/#team">Team</a>
         <a href="/#partners">Partners</a>
         <Link to="/partner">Sponsor</Link>
+        <Link to="/nexus">NEXUS</Link>
         <Link to="/register">Register</Link>
         <a href="/#contact">Contact</a>
       </div>

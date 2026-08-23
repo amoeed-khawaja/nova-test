@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NexusRouteImport } from './routes/nexus'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as StoriesRouteImport } from './routes/stories'
@@ -18,6 +19,11 @@ import { Route as StorySlugRouteImport } from './routes/story.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NexusRoute = NexusRouteImport.update({
+  id: '/nexus',
+  path: '/nexus',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PartnerRoute = PartnerRouteImport.update({
@@ -43,6 +49,7 @@ const StorySlugRoute = StorySlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/nexus': typeof NexusRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
   '/stories': typeof StoriesRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/nexus': typeof NexusRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
   '/stories': typeof StoriesRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/nexus': typeof NexusRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
   '/stories': typeof StoriesRoute
@@ -65,14 +74,23 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/partner' | '/register' | '/stories' | '/story/$slug'
+  fullPaths:
+    '/' | '/nexus' | '/partner' | '/register' | '/stories' | '/story/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/partner' | '/register' | '/stories' | '/story/$slug'
-  id: '__root__' | '/' | '/partner' | '/register' | '/stories' | '/story/$slug'
+  to: '/' | '/nexus' | '/partner' | '/register' | '/stories' | '/story/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/nexus'
+    | '/partner'
+    | '/register'
+    | '/stories'
+    | '/story/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  NexusRoute: typeof NexusRoute
   PartnerRoute: typeof PartnerRoute
   RegisterRoute: typeof RegisterRoute
   StoriesRoute: typeof StoriesRoute
@@ -86,6 +104,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nexus': {
+      id: '/nexus'
+      path: '/nexus'
+      fullPath: '/nexus'
+      preLoaderRoute: typeof NexusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/partner': {
@@ -121,6 +146,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  NexusRoute: NexusRoute,
   PartnerRoute: PartnerRoute,
   RegisterRoute: RegisterRoute,
   StoriesRoute: StoriesRoute,

@@ -156,3 +156,1628 @@ body:not(.nova-cursor) .field input,
 body:not(.nova-cursor) .field textarea { cursor: auto; }
 body:not(.nova-cursor) .cur-dot,
 body:not(.nova-cursor) .cur-ring { display: none; }
+
+/* ── Nav: secondary NEXUS CTA (Register stays primary) ── */
+.pillnav .cta-ghost {
+  border: 1px solid rgba(92, 216, 255, 0.35);
+  color: var(--cyan);
+  font-weight: 600;
+  font-size: 12.5px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: transparent;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.pillnav .cta-ghost:hover {
+  border-color: var(--cyan);
+  background: rgba(92, 216, 255, 0.08);
+  color: var(--text);
+}
+.pillnav .cta-ghost.active {
+  border-color: var(--cyan);
+  background: rgba(92, 216, 255, 0.1);
+}
+
+/* ═══════════════════════════════════════════
+   NEXUS — Orbital Destination microsite
+   Scoped under .nexus-page
+   Page/hero: dark void + cinematic glow (site continuous)
+   Ticket + checklist artifacts only:
+   paper #FFFFFF · mist #F0F9FC · fog #C8E8F2
+   ink #0A1220 · slate #516070 · cyan #00D4FF
+   magenta #FF3DAC · teal #00C9A7 · coral #FF5C45
+   board #0A1020
+   ═══════════════════════════════════════════ */
+
+.nexus-page {
+  --nx-paper: #FFFFFF;
+  --nx-mist: #F0F9FC;
+  --nx-fog: #C8E8F2;
+  --nx-ink: #0A1220;
+  --nx-slate: #516070;
+  --nx-cyan: #00D4FF;
+  --nx-magenta: #FF3DAC;
+  --nx-teal: #00C9A7;
+  --nx-sky: #00D4FF;
+  --nx-stamp: #FF5C45;
+  --nx-board: #0A1020;
+  --nx-line: rgba(10, 18, 32, 0.12);
+  margin-top: -128px;
+}
+
+/* Hero — dark stage continuous with site void / glow-layer;
+   sized to show ticket + checklist + CTAs above the fold on laptop */
+.nexus-hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding: clamp(96px, 11vh, 112px) 0 clamp(24px, 3.5vh, 40px);
+  overflow: visible;
+  color: var(--text);
+  box-sizing: border-box;
+}
+.nexus-mesh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 50% at 78% 18%, rgba(92, 216, 255, 0.16), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 12% 72%, rgba(156, 124, 255, 0.2), transparent 50%),
+    radial-gradient(ellipse 40% 35% at 55% 40%, rgba(255, 124, 216, 0.1), transparent 60%),
+    linear-gradient(180deg, rgba(7, 7, 12, 0.25), transparent 42%, rgba(7, 7, 12, 0.55));
+}
+.nexus-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(52px);
+  opacity: 0.55;
+  animation: nexus-breathe 10s ease-in-out infinite;
+}
+.nexus-orb-a {
+  width: min(42vw, 420px);
+  height: min(42vw, 420px);
+  top: 6%;
+  right: 6%;
+  background: rgba(92, 216, 255, 0.32);
+}
+.nexus-orb-b {
+  width: min(28vw, 280px);
+  height: min(28vw, 280px);
+  bottom: 22%;
+  left: 4%;
+  background: rgba(156, 124, 255, 0.28);
+  animation-delay: -3.5s;
+}
+.nexus-orb-c {
+  width: min(22vw, 200px);
+  height: min(22vw, 200px);
+  top: 44%;
+  left: 48%;
+  background: rgba(255, 124, 216, 0.22);
+  animation-delay: -7s;
+}
+.nexus-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+@keyframes nexus-breathe {
+  0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.45; }
+  50% { transform: scale(1.08) translate(2%, -1%); opacity: 0.65; }
+}
+
+.nexus-page .wrap.nexus-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: min(1360px, 100%);
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  overflow: visible;
+}
+.nexus-crumbs {
+  margin-bottom: 14px;
+  color: var(--dim);
+}
+.nexus-crumbs a { color: var(--cyan); }
+
+.nexus-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(240px, 300px);
+  gap: clamp(18px, 2.5vw, 36px);
+  align-items: center;
+}
+.nexus-hero-copy {
+  min-width: 0;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ── Hero flight ticket (left) — crisp white artifact on dark stage ── */
+.nexus-ticket {
+  --ticket-r: 14px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 70px 12px minmax(0, 1fr);
+  width: 100%;
+  max-width: 900px;
+  min-height: 0;
+  border-radius: var(--ticket-r);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 1), transparent 50%),
+    linear-gradient(180deg, var(--nx-paper), var(--nx-mist));
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 32px 72px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(10, 18, 32, 0.06) inset,
+    0 0 56px rgba(0, 212, 255, 0.14);
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease-out, box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+  opacity: 0;
+  animation: nexus-rise 1s ease forwards 0.2s;
+  outline: none;
+  color: var(--nx-ink);
+  container-type: inline-size;
+  container-name: nexus-ticket;
+}
+.nexus-ticket:hover,
+.nexus-ticket:focus-within {
+  border-color: rgba(0, 212, 255, 0.55);
+  box-shadow:
+    0 36px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+    0 0 64px rgba(0, 212, 255, 0.22),
+    0 0 40px rgba(255, 61, 172, 0.1);
+}
+.nexus-ticket:hover .nexus-ticket-stub {
+  transform: translateX(-4px);
+}
+.nexus-ticket:hover .nexus-ticket-tear {
+  filter: brightness(0.92);
+}
+.nexus-ticket:focus-within {
+  outline: 2px solid var(--nx-cyan);
+  outline-offset: 3px;
+}
+.nexus-ticket.is-stamped {
+  border-color: rgba(255, 92, 69, 0.55);
+}
+
+.nexus-ticket-stub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 8px;
+  background:
+    linear-gradient(180deg, rgba(0, 212, 255, 0.16), transparent 55%),
+    #EAF8FC;
+  border-right: none;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nexus-ticket-stub-label {
+  margin: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: var(--nx-cyan);
+}
+.nexus-ticket-stub-flight {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--nx-ink);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+.nexus-ticket-stub-gate {
+  margin: 0;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  color: var(--nx-sky);
+  text-align: center;
+}
+
+.nexus-ticket-tear {
+  position: relative;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 7px,
+      rgba(0, 212, 255, 0.55) 7px 8px
+    );
+  mask-image: linear-gradient(180deg, transparent 4%, #000 12%, #000 88%, transparent 96%);
+  transition: filter 0.3s ease;
+}
+.nexus-ticket-tear::before,
+.nexus-ticket-tear::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--void);
+  transform: translateX(-50%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.nexus-ticket-tear::before { top: -9px; }
+.nexus-ticket-tear::after { bottom: -9px; }
+
+.nexus-ticket-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "head"
+    "board"
+    "route"
+    "fields"
+    "dest"
+    "chips"
+    "pickers"
+    "foot";
+  row-gap: 7px;
+  column-gap: 0;
+  padding: 10px 16px 8px 12px;
+  min-width: 0;
+  container-type: inline-size;
+  container-name: nexus-ticket-main;
+  align-content: start;
+}
+
+/* Aligned meta header — same label/value baselines */
+.nexus-ticket-head {
+  grid-area: head;
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) max-content;
+  gap: 8px 20px;
+  align-items: start;
+  padding-bottom: 14px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--nx-line);
+  position: relative;
+  z-index: 2;
+}
+.nexus-ticket-meta-cell {
+  display: grid;
+  grid-template-rows: 14px auto;
+  gap: 4px;
+  align-content: start;
+  min-width: 0;
+}
+.nexus-ticket-meta-cell--end {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55em;
+  text-align: right;
+  min-width: max-content;
+  white-space: nowrap;
+  align-self: center;
+}
+.nexus-ticket-meta-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  line-height: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nx-cyan);
+  white-space: nowrap;
+}
+.nexus-ticket-meta-value {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.1em;
+  color: var(--nx-ink);
+}
+.nexus-ticket-meta-value--accent {
+  color: var(--nx-stamp);
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.nexus-ticket-meta-cell--end .nexus-ticket-meta-value {
+  white-space: nowrap;
+}
+
+/* Departure board — isolated from meta so flip faces never collide */
+.nexus-ticket-board {
+  grid-area: board;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 32px;
+  padding: 6px 10px;
+  margin-top: 0;
+  border-radius: 7px;
+  background: var(--nx-board);
+  color: #E8F1F7;
+  overflow: hidden;
+  isolation: isolate;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+.nexus-ticket-board-label {
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(232, 241, 247, 0.55);
+  flex-shrink: 0;
+  min-width: 7.5em;
+}
+.nexus-flip-board {
+  display: flex;
+  gap: 2px;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  min-width: 0;
+  perspective: 420px;
+}
+.nexus-flip-cell {
+  display: inline-flex;
+  width: 12px;
+  height: 18px;
+  flex: 0 0 12px;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #1a2a3d, #0d1520);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  transform-origin: center center;
+  animation: nexus-flip 0.45s ease both;
+}
+.nexus-flip-face {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--nx-cyan);
+  line-height: 1;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.45);
+}
+@keyframes nexus-flip {
+  from { transform: rotateX(-80deg); opacity: 0.3; }
+  to { transform: rotateX(0deg); opacity: 1; }
+}
+
+.nexus-ticket-route-row {
+  grid-area: route;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 0;
+}
+.nexus-ticket-route {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: "Syne", "Space Grotesk", sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 2.6vw, 24px);
+  letter-spacing: 0.06em;
+  color: var(--nx-ink);
+  line-height: 1;
+}
+.nexus-ticket-flightline {
+  width: clamp(28px, 6vw, 48px);
+  height: 2px;
+  background: linear-gradient(90deg, var(--nx-cyan), var(--nx-magenta));
+  position: relative;
+  border-radius: 2px;
+}
+.nexus-ticket-flightline::before,
+.nexus-ticket-flightline::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.nexus-ticket-flightline::before {
+  left: -2px;
+  background: var(--nx-cyan);
+}
+.nexus-ticket-flightline::after {
+  right: -2px;
+  background: var(--nx-magenta);
+}
+.nexus-boarding-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-slate);
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 201, 167, 0.35);
+  background: rgba(0, 201, 167, 0.08);
+}
+.nexus-boarding-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--nx-teal);
+  box-shadow: 0 0 0 0 rgba(0, 201, 167, 0.5);
+  animation: nexus-pulse 1.8s ease-out infinite;
+}
+@keyframes nexus-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 201, 167, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(0, 201, 167, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 201, 167, 0); }
+}
+
+/* Field grid — aligned label/value columns */
+.nexus-ticket-fields {
+  grid-area: fields;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px 10px;
+  padding: 5px 0;
+  border-top: 1px solid var(--nx-line);
+  border-bottom: 1px solid var(--nx-line);
+}
+.nexus-ticket-field {
+  display: grid;
+  grid-template-rows: 11px auto;
+  gap: 3px;
+  align-content: start;
+  min-width: 0;
+  cursor: help;
+}
+.nexus-ticket-field span {
+  font-size: 7.5px;
+  line-height: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-slate);
+}
+.nexus-ticket-field:nth-child(1) span { color: var(--nx-cyan); }
+.nexus-ticket-field:nth-child(2) span { color: var(--nx-magenta); }
+.nexus-ticket-field:nth-child(3) span { color: var(--nx-stamp); }
+.nexus-ticket-field:nth-child(4) span { color: var(--nx-teal); }
+.nexus-ticket-field:nth-child(5) span { color: var(--nx-cyan); }
+.nexus-ticket-field strong {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--nx-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexus-ticket-dest {
+  grid-area: dest;
+  font-family: "Syne", "Space Grotesk", sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, calc((100cqi - 8px) / 9.2), 64px);
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  margin: 0;
+  white-space: nowrap;
+  width: max-content;
+  max-width: 100%;
+  overflow: visible;
+  background: linear-gradient(135deg, var(--nx-ink) 8%, var(--nx-cyan) 48%, var(--nx-magenta) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@supports not (font-size: 1cqi) {
+  .nexus-ticket-dest {
+    font-size: clamp(28px, 6vw, 58px);
+  }
+}
+
+.nexus-ticket-chips {
+  grid-area: chips;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.nexus-ticket-chips li {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--nx-ink);
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 212, 255, 0.4);
+  background: rgba(0, 212, 255, 0.1);
+}
+.nexus-ticket-chips li:nth-child(2) {
+  border-color: rgba(255, 61, 172, 0.4);
+  background: rgba(255, 61, 172, 0.1);
+}
+.nexus-ticket-chips li:nth-child(3) {
+  border-color: rgba(0, 201, 167, 0.4);
+  background: rgba(0, 201, 167, 0.1);
+}
+.nexus-ticket-chips li:nth-child(4) {
+  border-color: rgba(255, 92, 69, 0.4);
+  background: rgba(255, 92, 69, 0.1);
+}
+
+.nexus-ticket-pickers {
+  grid-area: pickers;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 6px 12px;
+}
+
+/* Wider ticket → classic boarding-pass rectangle (chips | pickers) */
+@container nexus-ticket (min-width: 560px) {
+  .nexus-ticket-main {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-areas:
+      "head head"
+      "board board"
+      "route route"
+      "fields fields"
+      "dest dest"
+      "chips pickers"
+      "foot foot";
+    column-gap: 14px;
+    row-gap: 7px;
+  }
+  .nexus-ticket-chips {
+    align-content: start;
+  }
+  .nexus-ticket-pickers {
+    grid-template-columns: 1fr;
+    align-content: start;
+  }
+}
+
+.nexus-picker {
+  display: grid;
+  gap: 4px;
+}
+.nexus-picker-label {
+  font-size: 7.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nx-slate);
+}
+.nexus-picker-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.nexus-picker-btn {
+  appearance: none;
+  border: 1px solid var(--nx-line);
+  background: #fff;
+  color: var(--nx-ink);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 4px 7px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+}
+.nexus-picker-btn:hover {
+  border-color: rgba(0, 212, 255, 0.5);
+  background: rgba(0, 212, 255, 0.1);
+}
+.nexus-picker-btn:focus-visible {
+  outline: 2px solid var(--nx-cyan);
+  outline-offset: 1px;
+}
+.nexus-picker-btn.is-on {
+  background: linear-gradient(135deg, var(--nx-cyan), var(--nx-magenta));
+  border-color: transparent;
+  color: #0A1220;
+  transform: translateY(-1px);
+}
+
+.nexus-ticket-foot {
+  grid-area: foot;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  grid-template-rows: auto auto;
+  gap: 4px 12px;
+  align-items: end;
+  margin-top: 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--nx-line);
+}
+.nexus-ticket-qr {
+  grid-row: 1 / 3;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--nx-line);
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  appearance: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.nexus-ticket-qr:hover,
+.nexus-ticket-qr:focus-visible {
+  border-color: var(--nx-stamp);
+  box-shadow: 0 0 0 3px rgba(255, 92, 69, 0.2);
+  outline: none;
+}
+.nexus-ticket-qr span {
+  background: var(--nx-ink);
+  border-radius: 1px;
+  opacity: 0.8;
+}
+.nexus-ticket-qr span:nth-child(2),
+.nexus-ticket-qr span:nth-child(4),
+.nexus-ticket-qr span:nth-child(6),
+.nexus-ticket-qr span:nth-child(8) {
+  background: transparent;
+}
+.nexus-ticket-qr span:nth-child(5) {
+  background: var(--nx-magenta);
+  opacity: 1;
+}
+.nexus-ticket-barcode {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5px;
+  height: 22px;
+}
+.nexus-ticket-barcode span {
+  display: block;
+  width: var(--w, 2px);
+  background: linear-gradient(180deg, rgba(21, 32, 43, 0.75), rgba(21, 32, 43, 0.4));
+  border-radius: 0.5px;
+}
+.nexus-ticket-barcode--stub {
+  flex-direction: column;
+  width: 28px;
+  height: auto;
+  flex: 1;
+  max-height: 88px;
+  gap: 1.5px;
+}
+.nexus-ticket-barcode--stub span {
+  width: 100%;
+  height: var(--w, 2px);
+}
+.nexus-ticket-barcode--main {
+  min-width: 0;
+}
+.nexus-ticket-passenger {
+  margin: 0;
+  grid-column: 2;
+  font-family: "Syne", "Space Grotesk", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nx-ink);
+  background: linear-gradient(90deg, var(--nx-ink) 0%, var(--nx-cyan) 55%, var(--nx-magenta) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.92;
+}
+
+.nexus-ticket-stamp {
+  position: absolute;
+  right: 10%;
+  top: 38%;
+  font-family: "Syne", "Space Grotesk", sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 3vw, 28px);
+  letter-spacing: 0.14em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 92, 69, 0.85);
+  transform: rotate(var(--stamp-angle, -16deg)) scale(0.75);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
+  filter: drop-shadow(0 4px 12px rgba(255, 92, 69, 0.35));
+}
+.nexus-ticket-stamp--cleared { top: 34%; right: 12%; }
+.nexus-ticket-stamp--visa { top: 48%; right: 26%; }
+.nexus-ticket-stamp--entry { top: 40%; right: 6%; }
+.nexus-ticket-stamp.is-show {
+  opacity: 1;
+  transform: rotate(var(--stamp-angle, -16deg)) scale(1);
+}
+
+.nexus-ctas {
+  margin-top: 14px;
+  gap: 12px;
+  opacity: 0;
+  animation: nexus-rise 0.9s ease forwards 0.55s;
+}
+.nexus-page .nexus-ctas .btn {
+  font-size: 13.5px;
+  padding: 11px 22px;
+}
+
+/* Right panel — interactive week checklist (dark, stacked) */
+.nexus-pass-wrap {
+  justify-self: end;
+  width: 100%;
+  max-width: 300px;
+  perspective: 900px;
+  opacity: 0;
+  animation: nexus-rise 1s ease forwards 0.72s;
+}
+.nexus-pass {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 14px 12px;
+  border-radius: 14px;
+  background:
+    linear-gradient(165deg, rgba(18, 28, 48, 0.96) 0%, rgba(8, 12, 24, 0.98) 55%, rgba(6, 10, 20, 1) 100%);
+  border: 1px solid rgba(0, 212, 255, 0.18);
+  box-shadow:
+    0 28px 64px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 0 40px rgba(255, 61, 172, 0.08);
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease-out, box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+  color: #E8F1F7;
+}
+.nexus-pass:hover,
+.nexus-pass:focus-within {
+  border-color: rgba(255, 61, 172, 0.4);
+  box-shadow:
+    0 32px 72px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 0 48px rgba(0, 212, 255, 0.12);
+}
+
+/* Do not use bare <header> inside .nexus-pass — nova.css `header{position:fixed}` piles content */
+.nexus-pass header,
+.nexus-pass-head {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  z-index: auto !important;
+  display: flex;
+  justify-content: flex-start;
+}
+.nexus-pass-head {
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  width: 100%;
+}
+.nexus-pass-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+.nexus-pass-head-row--title {
+  align-items: center;
+}
+.nexus-pass-eyebrow {
+  margin: 0;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nx-magenta);
+  flex-shrink: 0;
+}
+.nexus-pass-title-static {
+  margin: 0;
+  min-width: 0;
+  flex: 1;
+  font-family: "Syne", "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: -0.02em;
+  color: #F2F7FB;
+  line-height: 1.25;
+}
+.nexus-pass-meta {
+  margin: 0;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: rgba(232, 241, 247, 0.55);
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nexus-pass-route {
+  margin: 0;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(200, 232, 242, 0.55);
+}
+
+.nexus-progress-wrap {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+.nexus-progress-ring {
+  width: 36px;
+  height: 36px;
+  transform: rotate(-90deg);
+}
+.nexus-progress-ring-track {
+  fill: none;
+  stroke: rgba(200, 232, 242, 0.18);
+  stroke-width: 3.5;
+}
+.nexus-progress-ring-fill {
+  fill: none;
+  stroke: var(--nx-cyan);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.4s ease;
+}
+.nexus-progress-ring-label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #F2F7FB;
+}
+
+.nexus-pass-panel {
+  flex-shrink: 0;
+  padding: 10px 12px 12px;
+  border-radius: 10px;
+  background: linear-gradient(160deg, rgba(0, 212, 255, 0.12), rgba(255, 61, 172, 0.08));
+  border: 1px solid rgba(0, 212, 255, 0.22);
+}
+.nexus-pass-beat {
+  margin: 0 0 4px;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nx-teal);
+}
+.nexus-pass-title {
+  margin: 0 0 4px;
+  font-family: "Syne", "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #F2F7FB;
+}
+.nexus-pass-body {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: rgba(232, 241, 247, 0.72);
+}
+
+.nexus-pass-journey {
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.nexus-pass-journey-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.nexus-pass-progress {
+  margin: 0;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--nx-cyan);
+  text-align: right;
+}
+.nexus-pass-stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.nexus-pass-stage {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 8px;
+  align-items: start;
+  text-align: left;
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #E8F1F7;
+  font: inherit;
+  font-size: 11.5px;
+  line-height: 1.3;
+  padding: 7px 9px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+.nexus-pass-stage:hover {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: rgba(0, 212, 255, 0.35);
+}
+.nexus-pass-stage:focus-visible {
+  outline: 2px solid var(--nx-cyan);
+  outline-offset: 2px;
+}
+.nexus-pass-stage.is-ticked {
+  border-color: rgba(0, 201, 167, 0.45);
+  background: rgba(0, 201, 167, 0.14);
+  box-shadow: 0 0 0 1px rgba(0, 201, 167, 0.1);
+}
+.nexus-pass-stage.is-ticked:active {
+  transform: scale(0.985);
+}
+.nexus-pass-check {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  border: 1.5px solid rgba(0, 201, 167, 0.55);
+  border-radius: 3px;
+  background: rgba(8, 12, 24, 0.8);
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.nexus-pass-stage.is-ticked .nexus-pass-check {
+  border-color: var(--nx-teal);
+  background: rgba(0, 201, 167, 0.22);
+  box-shadow: 0 0 8px rgba(0, 201, 167, 0.25);
+}
+.nexus-pass-stage.is-ticked .nexus-pass-check::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--nx-teal);
+  border-width: 0 1.75px 1.75px 0;
+  transform: rotate(45deg);
+  animation: nexus-tick 0.35s ease forwards;
+}
+
+.nexus-pass-stamp {
+  position: absolute;
+  right: 14px;
+  bottom: 72px;
+  font-family: "Syne", "Space Grotesk", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.14em;
+  color: transparent;
+  -webkit-text-stroke: 1.6px rgba(255, 92, 69, 0.75);
+  transform: rotate(-18deg) scale(0.8);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
+  filter: drop-shadow(0 4px 12px rgba(255, 92, 69, 0.3));
+}
+.nexus-pass-stamp.is-show {
+  opacity: 1;
+  transform: rotate(-18deg) scale(1);
+}
+.nexus-pass.is-winner {
+  border-color: rgba(255, 92, 69, 0.5);
+}
+
+/* Confetti on checklist complete */
+.nexus-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+}
+.nexus-confetti-bit {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 6px;
+  height: 8px;
+  border-radius: 1px;
+  background: hsl(var(--h, 170), 65%, 45%);
+  transform: translate(-50%, 0);
+  animation: nexus-confetti-fly 1.2s ease-out forwards;
+  animation-delay: calc(var(--i) * 18ms);
+}
+.nexus-confetti-bit:nth-child(3n) { background: var(--nx-cyan); }
+.nexus-confetti-bit:nth-child(3n+1) { background: var(--nx-magenta); }
+.nexus-confetti-bit:nth-child(3n+2) { background: var(--nx-stamp); }
+@keyframes nexus-confetti-fly {
+  0% { opacity: 1; transform: translate(-50%, 0) scale(1) rotate(0deg); }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--x)), -90px) scale(0.6) rotate(220deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .nexus-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .nexus-ticket {
+    max-width: none;
+  }
+  .nexus-pass-wrap {
+    justify-self: start;
+    max-width: 400px;
+  }
+}
+
+/* Laptop / short desktop: keep full hero (ticket + checklist + CTAs) in first viewport */
+@media (min-width: 901px) and (max-height: 900px) {
+  .nexus-hero {
+    padding: clamp(88px, 10vh, 104px) 0 20px;
+    align-items: center;
+  }
+  .nexus-crumbs {
+    margin-bottom: 10px;
+  }
+  .nexus-hero-grid {
+    gap: clamp(14px, 2vw, 28px);
+  }
+  .nexus-ticket-main {
+    padding: 8px 14px 6px 10px;
+    row-gap: 5px;
+  }
+  .nexus-ticket-head {
+    padding-bottom: 12px;
+    margin-bottom: 4px;
+  }
+  .nexus-ticket-board {
+    min-height: 28px;
+    padding: 5px 8px;
+  }
+  .nexus-flip-cell {
+    width: 11px;
+    height: 16px;
+    flex-basis: 11px;
+  }
+  .nexus-flip-face {
+    font-size: 9px;
+  }
+  .nexus-ticket-dest {
+    font-size: clamp(26px, calc((100cqi - 8px) / 10), 52px);
+  }
+  .nexus-ticket-chips li {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+  .nexus-picker-btn {
+    padding: 3px 6px;
+    font-size: 9px;
+  }
+  .nexus-ctas {
+    margin-top: 10px;
+  }
+  .nexus-page .nexus-ctas .btn {
+    font-size: 12.5px;
+    padding: 9px 18px;
+  }
+  .nexus-pass {
+    padding: 12px 12px 10px;
+    gap: 10px;
+  }
+  .nexus-pass-panel {
+    padding: 8px 10px 10px;
+  }
+  .nexus-pass-stage {
+    padding: 5px 7px;
+    font-size: 11px;
+  }
+}
+
+@keyframes nexus-tick {
+  from { transform: scale(0) rotate(45deg); opacity: 0; }
+  to { transform: scale(1) rotate(45deg); opacity: 1; }
+}
+
+@keyframes nexus-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Proof strip — below fold */
+.nexus-proof {
+  padding: 22px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 212, 255, 0.04);
+}
+.nexus-proof-row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  animation: nexus-proof-drift 28s linear infinite;
+}
+.nexus-proof-row li {
+  position: relative;
+  padding-left: 14px;
+}
+.nexus-proof-row li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--nx-teal);
+  transform: translateY(-50%);
+  opacity: 0.85;
+}
+@keyframes nexus-proof-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nexus-orb,
+  .nexus-ticket,
+  .nexus-ctas,
+  .nexus-pass-wrap,
+  .nexus-pass-panel,
+  .nexus-proof-row,
+  .nexus-pass-stage.is-ticked .nexus-pass-check::after,
+  .nexus-flip-cell,
+  .nexus-boarding-dot,
+  .nexus-confetti-bit {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  .nexus-ticket,
+  .nexus-ctas,
+  .nexus-proof-row {
+    transform: none !important;
+  }
+  .nexus-ticket,
+  .nexus-pass {
+    transform: none !important;
+    transition: none !important;
+  }
+  .nexus-ticket:hover .nexus-ticket-stub {
+    transform: none;
+  }
+  .nexus-pass-stage,
+  .nexus-pass-stamp,
+  .nexus-ticket-stamp,
+  .nexus-picker-btn {
+    transition: none !important;
+  }
+  .nexus-pass-stamp.is-show,
+  .nexus-ticket-stamp.is-show {
+    transform: rotate(var(--stamp-angle, -18deg)) scale(1);
+  }
+  .nexus-ticket-stamp.is-show {
+    transform: rotate(var(--stamp-angle, -16deg)) scale(1);
+  }
+  .nexus-pass-stage.is-ticked .nexus-pass-check::after {
+    transform: rotate(45deg);
+  }
+  .nexus-confetti { display: none; }
+}
+
+/* Manifesto */
+.nexus-manifesto {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 40px;
+  align-items: end;
+}
+@media (max-width: 800px) {
+  .nexus-manifesto { grid-template-columns: 1fr; gap: 28px; }
+}
+.nexus-keywords {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.nexus-keywords li {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.nexus-keywords li:last-child { border-bottom: none; }
+
+/* Learn monograms — interaction tiles, not generic card grids */
+.nexus-monograms {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+@media (max-width: 900px) {
+  .nexus-monograms { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .nexus-monograms { grid-template-columns: 1fr; }
+}
+.nexus-mono-tile {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px 22px 26px;
+  background: transparent;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.nexus-mono-tile:hover,
+.nexus-mono-tile:focus-within {
+  border-color: rgba(92, 216, 255, 0.45);
+  background: rgba(92, 216, 255, 0.04);
+  transform: translateY(-3px);
+}
+.nexus-mono-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid rgba(92, 216, 255, 0.35);
+  border-radius: 8px;
+  color: var(--cyan);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  margin-bottom: 16px;
+}
+.nexus-mono-tile h3 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+.nexus-mono-focus {
+  color: var(--text);
+  font-size: 14px;
+  margin: 0 0 8px;
+  opacity: 0.9;
+}
+.nexus-mono-note {
+  color: var(--dim);
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.45;
+}
+.nexus-mono-tba {
+  border-style: dashed;
+  opacity: 0.85;
+}
+
+/* Compete runway */
+.nexus-runway {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  position: relative;
+}
+.nexus-runway::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--violet), transparent);
+  opacity: 0.35;
+}
+@media (max-width: 800px) {
+  .nexus-runway { grid-template-columns: 1fr; gap: 22px; }
+  .nexus-runway::before { display: none; }
+}
+.nexus-round {
+  padding: 0 22px 8px 0;
+}
+.nexus-round-n {
+  display: block;
+  color: var(--cyan);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  margin-bottom: 14px;
+}
+.nexus-round h3 {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+.nexus-round p {
+  color: var(--dim);
+  font-size: 14.5px;
+  margin: 0;
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+/* Malaysia destination chapter */
+.nexus-destination-chapter {
+  position: relative;
+  padding: 100px 0;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.nexus-chapter-mesh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 80% at 20% 50%, rgba(92, 216, 255, 0.14), transparent 55%),
+    radial-gradient(ellipse 50% 60% at 90% 30%, rgba(156, 124, 255, 0.22), transparent 50%),
+    linear-gradient(180deg, rgba(7, 7, 12, 0.2), transparent 40%, rgba(7, 7, 12, 0.5));
+}
+.nexus-destination-chapter .wrap { position: relative; z-index: 1; max-width: 760px; }
+.nexus-chapter-place {
+  font-family: "Syne", "Space Grotesk", sans-serif;
+  font-weight: 800;
+  font-size: clamp(40px, 9vw, 96px);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin: 12px 0 18px;
+  white-space: nowrap;
+  max-width: 100%;
+  background: linear-gradient(120deg, var(--nx-cyan, #00D4FF), #fff 42%, var(--nx-magenta, #FF3DAC));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.nexus-chapter-title {
+  font-size: clamp(24px, 3.2vw, 36px);
+  margin: 0 0 16px;
+  max-width: 560px;
+}
+.nexus-chapter-lede {
+  color: var(--dim);
+  font-size: 16.5px;
+  max-width: 540px;
+  margin: 0 0 22px;
+  line-height: 1.55;
+}
+.nexus-chapter-list { max-width: 480px; }
+
+/* Startup row — quiet, no heavy cards */
+.nexus-startup-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+}
+@media (max-width: 700px) {
+  .nexus-startup-row { grid-template-columns: 1fr; gap: 22px; }
+}
+.nexus-startup-row h3 {
+  font-size: 17px;
+  margin: 0 0 8px;
+}
+.nexus-startup-row p {
+  color: var(--dim);
+  font-size: 14.5px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Path / timeline with draw motion */
+.nexus-path {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  position: relative;
+}
+.nexus-path::before {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 18px;
+  height: 2px;
+  background: var(--border);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nexus-path.is-drawn::before {
+  transform: scaleX(1);
+  background: linear-gradient(90deg, var(--cyan), var(--violet), var(--magenta));
+}
+@media (max-width: 900px) {
+  .nexus-path {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 16px;
+  }
+  .nexus-path::before {
+    display: none;
+  }
+}
+.nexus-path-step {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 8px;
+}
+.nexus-path-n {
+  color: var(--cyan);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  margin-bottom: 4px;
+}
+.nexus-path-step strong {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+.nexus-path-step span {
+  color: var(--dim);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Register */
+.nexus-register { padding-bottom: 100px; }
+.nexus-check label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  color: var(--dim);
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+.nexus-check input[type="checkbox"] {
+  width: auto;
+  margin-top: 3px;
+  accent-color: var(--violet);
+}
+.nexus-success {
+  border-color: rgba(92, 216, 255, 0.35);
+}
+
+@media (max-width: 700px) {
+  .nexus-hero { padding: 112px 0 56px; min-height: auto; align-items: flex-start; }
+  .nexus-hero-grid { gap: 28px; }
+  .nexus-crumbs { margin-bottom: 20px; }
+  .nexus-ticket {
+    grid-template-columns: 52px 10px minmax(0, 1fr);
+    min-height: 0;
+    transform: none !important;
+  }
+  .nexus-ticket-stub { padding: 14px 6px; }
+  .nexus-ticket-main {
+    padding: 12px 14px 12px;
+    row-gap: 9px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "board"
+      "route"
+      "fields"
+      "dest"
+      "chips"
+      "pickers"
+      "foot";
+    column-gap: 0;
+  }
+  .nexus-ticket-head {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    gap: 8px 12px;
+    padding-bottom: 14px;
+    margin-bottom: 6px;
+  }
+  .nexus-ticket-meta-cell--end {
+    min-width: max-content;
+  }
+  .nexus-ticket-board {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-height: 0;
+    margin-top: 2px;
+    padding: 10px 12px;
+  }
+  .nexus-ticket-board-label {
+    min-width: 0;
+  }
+  .nexus-flip-board {
+    flex-wrap: nowrap;
+    max-width: 100%;
+  }
+  .nexus-ticket-dest {
+    font-size: clamp(26px, calc((100vw - 100px) / 8.4), 48px);
+    max-width: 100%;
+  }
+  @supports (font-size: 1cqi) {
+    .nexus-ticket-dest {
+      font-size: clamp(26px, calc(100cqi / 8.2), 48px);
+    }
+  }
+  .nexus-ticket-chips li { font-size: 10.5px; padding: 5px 10px; }
+  .nexus-ticket-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px 10px;
+  }
+  .nexus-ticket-pickers {
+    grid-template-columns: 1fr;
+  }
+  .nexus-ticket-route { font-size: 20px; }
+  .nexus-page .nexus-ctas .btn { font-size: 13.5px; padding: 13px 24px; }
+  .nexus-ctas { margin-top: 22px; }
+  .nexus-pass-wrap {
+    max-width: none;
+    width: 100%;
+    margin-top: 4px;
+  }
+  .nexus-pass {
+    transform: none !important;
+    padding: 16px 14px 14px;
+  }
+  .nexus-destination-chapter { padding: 72px 0; }
+  .nexus-proof-row { justify-content: flex-start; gap: 12px 20px; }
+}
