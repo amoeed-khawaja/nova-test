@@ -545,9 +545,7 @@ function NexusPage() {
     fields["agree"] = fd.get("agree") ? "yes" : "no";
 
     try {
-      await submitRegistration({
-        data: { source: "nexus", fields },
-      });
+      await submitRegistration({ source: "nexus", fields });
       setSent(true);
     } catch (err) {
       console.error("[nexus register]", err);

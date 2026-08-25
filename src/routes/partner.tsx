@@ -86,9 +86,7 @@ function PartnerPage() {
       role_code: "PRT",
     };
     try {
-      await submitRegistration({
-        data: { source: "partner", role: "partner", fields },
-      });
+      await submitRegistration({ source: "partner", role: "partner", fields });
       setSent(true);
       form.reset();
     } catch (err) {

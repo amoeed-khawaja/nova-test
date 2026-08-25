@@ -14,6 +14,7 @@ import { Route as NexusRouteImport } from './routes/nexus'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as StoriesRouteImport } from './routes/stories'
+import { Route as ApiSubmitRegistrationRouteImport } from './routes/api/submit-registration'
 import { Route as StorySlugRouteImport } from './routes/story.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,11 @@ const StoriesRoute = StoriesRouteImport.update({
   path: '/stories',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSubmitRegistrationRoute = ApiSubmitRegistrationRouteImport.update({
+  id: '/api/submit-registration',
+  path: '/api/submit-registration',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StorySlugRoute = StorySlugRouteImport.update({
   id: '/story/$slug',
   path: '/story/$slug',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
   '/stories': typeof StoriesRoute
+  '/api/submit-registration': typeof ApiSubmitRegistrationRoute
   '/story/$slug': typeof StorySlugRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
   '/stories': typeof StoriesRoute
+  '/api/submit-registration': typeof ApiSubmitRegistrationRoute
   '/story/$slug': typeof StorySlugRoute
 }
 export interface FileRoutesById {
@@ -70,14 +78,28 @@ export interface FileRoutesById {
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
   '/stories': typeof StoriesRoute
+  '/api/submit-registration': typeof ApiSubmitRegistrationRoute
   '/story/$slug': typeof StorySlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/nexus' | '/partner' | '/register' | '/stories' | '/story/$slug'
+    | '/'
+    | '/nexus'
+    | '/partner'
+    | '/register'
+    | '/stories'
+    | '/api/submit-registration'
+    | '/story/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/nexus' | '/partner' | '/register' | '/stories' | '/story/$slug'
+  to:
+    | '/'
+    | '/nexus'
+    | '/partner'
+    | '/register'
+    | '/stories'
+    | '/api/submit-registration'
+    | '/story/$slug'
   id:
     | '__root__'
     | '/'
@@ -85,6 +107,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/register'
     | '/stories'
+    | '/api/submit-registration'
     | '/story/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -94,6 +117,7 @@ export interface RootRouteChildren {
   PartnerRoute: typeof PartnerRoute
   RegisterRoute: typeof RegisterRoute
   StoriesRoute: typeof StoriesRoute
+  ApiSubmitRegistrationRoute: typeof ApiSubmitRegistrationRoute
   StorySlugRoute: typeof StorySlugRoute
 }
 
@@ -134,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/submit-registration': {
+      id: '/api/submit-registration'
+      path: '/api/submit-registration'
+      fullPath: '/api/submit-registration'
+      preLoaderRoute: typeof ApiSubmitRegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/story/$slug': {
       id: '/story/$slug'
       path: '/story/$slug'
@@ -150,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   PartnerRoute: PartnerRoute,
   RegisterRoute: RegisterRoute,
   StoriesRoute: StoriesRoute,
+  ApiSubmitRegistrationRoute: ApiSubmitRegistrationRoute,
   StorySlugRoute: StorySlugRoute,
 }
 export const routeTree = rootRouteImport

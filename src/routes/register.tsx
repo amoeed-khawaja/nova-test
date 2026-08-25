@@ -128,9 +128,7 @@ function RegisterPage() {
     }
 
     try {
-      await submitRegistration({
-        data: { source: "nova", role, fields },
-      });
+      await submitRegistration({ source: "nova", role, fields });
       setSent(true);
     } catch (err) {
       console.error("[register]", err);
