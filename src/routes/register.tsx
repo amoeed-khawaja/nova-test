@@ -132,9 +132,15 @@ function RegisterPage() {
         data: { source: "nova", role, fields },
       });
       setSent(true);
-      form.reset();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      console.error("[register]", err);
+      const msg =
+        err instanceof Error
+          ? err.message
+          : typeof err === "object" && err && "message" in err
+            ? String((err as { message: unknown }).message)
+            : "Something went wrong. Please try again.";
+      setError(msg);
     } finally {
       setSending(false);
     }
@@ -181,129 +187,146 @@ function RegisterPage() {
               </div>
             </div>
 
-            <form className="form-card reveal" onSubmit={onSubmit}>
-              <div className="field">
-                <label htmlFor="role">I AM REGISTERING AS</label>
-                <select
-                  id="role"
-                  name="role"
-                  value={role}
-                  onChange={(e) => {
-                    setRole(e.target.value as NovaRole);
+            {sent ? (
+              <div className="form-card reveal" role="status">
+                <div className="eyebrow">Received</div>
+                <h3 style={{ fontSize: 22, margin: "8px 0 12px" }}>Thank you for your submission</h3>
+                <p style={{ color: "var(--dim)", fontSize: 15 }}>
+                  We&apos;ve received your registration
+                  {active ? ` as ${active.label}` : ""}. The NOVA team will follow up by email.
+                </p>
+                <button
+                  className="btn btn-ghost magnet"
+                  type="button"
+                  style={{ marginTop: 20 }}
+                  onClick={() => {
                     setSent(false);
                     setError(null);
                   }}
                 >
-                  {roles.map((r) => (
-                    <option key={r.v} value={r.v}>
-                      {r.label} ({NOVA_ROLE_CODES[r.v]})
-                    </option>
-                  ))}
-                </select>
-                {active && (
-                  <p style={{ color: "var(--dim)", fontSize: 13, marginTop: 8 }}>{active.note}</p>
-                )}
+                  Submit another
+                </button>
               </div>
-
-              <div className="form-grid">
+            ) : (
+              <form className="form-card reveal" onSubmit={onSubmit}>
                 <div className="field">
-                  <label htmlFor="name">FULL NAME</label>
-                  <input id="name" name="name" type="text" required />
+                  <label htmlFor="role">I AM REGISTERING AS</label>
+                  <select
+                    id="role"
+                    name="role"
+                    value={role}
+                    onChange={(e) => {
+                      setRole(e.target.value as NovaRole);
+                      setSent(false);
+                      setError(null);
+                    }}
+                  >
+                    {roles.map((r) => (
+                      <option key={r.v} value={r.v}>
+                        {r.label} ({NOVA_ROLE_CODES[r.v]})
+                      </option>
+                    ))}
+                  </select>
+                  {active && (
+                    <p style={{ color: "var(--dim)", fontSize: 13, marginTop: 8 }}>{active.note}</p>
+                  )}
                 </div>
 
-                {isUniversity ? (
+                <div className="form-grid">
                   <div className="field">
-                    <label htmlFor="university">UNIVERSITY NAME</label>
-                    <input id="university" name="university" type="text" required />
+                    <label htmlFor="name">FULL NAME</label>
+                    <input id="name" name="name" type="text" required />
                   </div>
-                ) : (
-                  <div className="field">
-                    <label htmlFor="org">
-                      {isStudent ? "UNIVERSITY / ORGANISATION" : "ORGANISATION"}
-                    </label>
-                    <input id="org" name="org" type="text" required />
-                  </div>
-                )}
 
-                {(isUniversity || isOrg) && (
+                  {isUniversity ? (
+                    <div className="field">
+                      <label htmlFor="university">UNIVERSITY NAME</label>
+                      <input id="university" name="university" type="text" required />
+                    </div>
+                  ) : (
+                    <div className="field">
+                      <label htmlFor="org">
+                        {isStudent ? "UNIVERSITY / ORGANISATION" : "ORGANISATION"}
+                      </label>
+                      <input id="org" name="org" type="text" required />
+                    </div>
+                  )}
+
+                  {(isUniversity || isOrg) && (
+                    <div className="field">
+                      <label htmlFor="designation">DESIGNATION</label>
+                      <input id="designation" name="designation" type="text" required />
+                    </div>
+                  )}
+
                   <div className="field">
-                    <label htmlFor="designation">DESIGNATION</label>
-                    <input id="designation" name="designation" type="text" required />
+                    <label htmlFor="email">EMAIL</label>
+                    <input id="email" name="email" type="email" required />
                   </div>
-                )}
+                  <div className="field">
+                    <label htmlFor="phone">PHONE</label>
+                    <input id="phone" name="phone" type="tel" required />
+                  </div>
+
+                  {isStudent && (
+                    <div className="field">
+                      <label htmlFor="city">CITY</label>
+                      <input id="city" name="city" type="text" />
+                    </div>
+                  )}
+
+                  {(isStudent || isTrackRole) && (
+                    <div className="field">
+                      <label htmlFor="track">PREFERRED TRACK</label>
+                      <select id="track" name="track" defaultValue="ai" required={isTrackRole}>
+                        <option value="ai">AI</option>
+                        <option value="climate">Climate</option>
+                        <option value="web3">Web3</option>
+                        <option value="venture">Venture</option>
+                      </select>
+                    </div>
+                  )}
+
+                  {isTrackRole && (
+                    <div className="field">
+                      <label htmlFor="linkedin">LINKEDIN PROFILE URL</label>
+                      <input
+                        id="linkedin"
+                        name="linkedin"
+                        type="url"
+                        placeholder="https://linkedin.com/in/…"
+                        required
+                      />
+                    </div>
+                  )}
+
+                  {isMedia && (
+                    <div className="field">
+                      <label htmlFor="social">ORGANISATION SOCIAL MEDIA PROFILE</label>
+                      <input id="social" name="social" type="url" placeholder="https://…" required />
+                    </div>
+                  )}
+                </div>
 
                 <div className="field">
-                  <label htmlFor="email">EMAIL</label>
-                  <input id="email" name="email" type="email" required />
+                  <label htmlFor="idea">
+                    {isStudent
+                      ? "TELL US ABOUT YOUR IDEA OR INTEREST"
+                      : "YOUR QUERY — WHAT ARE YOU LOOKING FOR FROM NOVA?"}
+                  </label>
+                  <textarea id="idea" name="idea" required />
                 </div>
-                <div className="field">
-                  <label htmlFor="phone">PHONE</label>
-                  <input id="phone" name="phone" type="tel" required />
-                </div>
 
-                {isStudent && (
-                  <div className="field">
-                    <label htmlFor="city">CITY</label>
-                    <input id="city" name="city" type="text" />
-                  </div>
+                <button className="btn btn-primary magnet" type="submit" disabled={sending}>
+                  {sending ? "Sending…" : "Submit registration"}
+                </button>
+                {error && (
+                  <p style={{ marginTop: 14, color: "#FF7C9A", fontSize: 13 }} role="alert">
+                    {error}
+                  </p>
                 )}
-
-                {(isStudent || isTrackRole) && (
-                  <div className="field">
-                    <label htmlFor="track">PREFERRED TRACK</label>
-                    <select id="track" name="track" defaultValue="ai" required={isTrackRole}>
-                      <option value="ai">AI</option>
-                      <option value="climate">Climate</option>
-                      <option value="web3">Web3</option>
-                      <option value="venture">Venture</option>
-                    </select>
-                  </div>
-                )}
-
-                {isTrackRole && (
-                  <div className="field">
-                    <label htmlFor="linkedin">LINKEDIN PROFILE URL</label>
-                    <input
-                      id="linkedin"
-                      name="linkedin"
-                      type="url"
-                      placeholder="https://linkedin.com/in/…"
-                      required
-                    />
-                  </div>
-                )}
-
-                {isMedia && (
-                  <div className="field">
-                    <label htmlFor="social">ORGANISATION SOCIAL MEDIA PROFILE</label>
-                    <input id="social" name="social" type="url" placeholder="https://…" required />
-                  </div>
-                )}
-              </div>
-
-              <div className="field">
-                <label htmlFor="idea">
-                  {isStudent
-                    ? "TELL US ABOUT YOUR IDEA OR INTEREST"
-                    : "YOUR QUERY — WHAT ARE YOU LOOKING FOR FROM NOVA?"}
-                </label>
-                <textarea id="idea" name="idea" required />
-              </div>
-
-              <button className="btn btn-primary magnet" type="submit" disabled={sending}>
-                {sending ? "Sending…" : "Submit registration"}
-              </button>
-              {error && (
-                <p style={{ marginTop: 14, color: "#FF7C9A", fontSize: 13 }} role="alert">
-                  {error}
-                </p>
-              )}
-              {sent && !error && (
-                <p style={{ marginTop: 14, color: "var(--cyan)", fontSize: 13 }}>
-                  Received — the NOVA team will follow up by email.
-                </p>
-              )}
-            </form>
+              </form>
+            )}
           </div>
 
           <div className="story-nav">

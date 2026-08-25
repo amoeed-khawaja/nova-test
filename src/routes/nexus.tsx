@@ -549,9 +549,15 @@ function NexusPage() {
         data: { source: "nexus", fields },
       });
       setSent(true);
-      form.reset();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      console.error("[nexus register]", err);
+      const msg =
+        err instanceof Error
+          ? err.message
+          : typeof err === "object" && err && "message" in err
+            ? String((err as { message: unknown }).message)
+            : "Something went wrong. Please try again.";
+      setError(msg);
     } finally {
       setSending(false);
     }
@@ -875,10 +881,9 @@ function NexusPage() {
             {sent ? (
               <div className="form-card reveal nexus-success" role="status">
                 <div className="eyebrow">Received</div>
-                <h3 style={{ fontSize: 22, margin: "8px 0 12px" }}>Application received</h3>
+                <h3 style={{ fontSize: 22, margin: "8px 0 12px" }}>Thank you for your submission</h3>
                 <p style={{ color: "var(--dim)", fontSize: 15 }}>
-                  We&apos;ll email next steps. Watch your inbox for the Edition 2026 brief
-                  and learning window dates.
+                  Application received. We&apos;ll email next steps for Edition 2026.
                 </p>
                 <button
                   className="btn btn-ghost magnet"
