@@ -174,8 +174,9 @@ updateProgress();
 prevBtn.addEventListener('click', ()=> carousel.scrollBy({left:-280, behavior:'smooth'}));
 nextBtn.addEventListener('click', ()=> carousel.scrollBy({left:280, behavior:'smooth'}));
 
-/* ---------- Generic drag-to-scroll for slider rows ---------- */
+/* ---------- Generic drag-to-scroll for slider rows (not auto-marquees) ---------- */
 document.querySelectorAll('.drag-scroll').forEach(el=>{
+  if(el.classList.contains('cardgrid-auto-track')) return;
   let down=false, startX=0, scrollStart=0;
   el.addEventListener('mousedown', e=>{ down=true; el.classList.add('dragging'); startX=e.pageX; scrollStart=el.scrollLeft; });
   window.addEventListener('mouseup', ()=>{ down=false; el.classList.remove('dragging'); });
@@ -187,16 +188,112 @@ document.querySelectorAll('.drag-scroll').forEach(el=>{
   el.addEventListener('touchmove', e=>{ el.scrollLeft = scrollStart - (e.touches[0].pageX - startX); }, {passive:true});
 });
 
-/* ---------- Auto-scrolling marquee: pause on hover/touch/drag ---------- */
-document.querySelectorAll('.cardgrid-auto-track').forEach(track=>{
-  const pause = ()=> track.classList.add('paused');
-  const resume = ()=> track.classList.remove('paused');
-  track.addEventListener('mouseenter', pause);
-  track.addEventListener('mouseleave', resume);
-  track.addEventListener('touchstart', pause, {passive:true});
-  track.addEventListener('touchend', resume, {passive:true});
-  track.addEventListener('mousedown', pause);
-  window.addEventListener('mouseup', resume);
+/* ---------- Advisory auto-marquee: JS scroll + drag/wheel pause, resume from offset ---------- */
+document.querySelectorAll('.cardgrid-auto-viewport').forEach(viewport=>{
+  const track = viewport.querySelector('.cardgrid-auto-track');
+  if(!track) return;
+
+  track.classList.add('js-marquee');
+  track.classList.remove('paused');
+
+  const SPEED = 42; // px/sec
+  const IDLE_MS = 1500;
+  let offset = 0;
+  let dragging = false;
+  let pointerId = null;
+  let startX = 0;
+  let startOffset = 0;
+  let moved = false;
+  let resumeTimer = null;
+  let userPaused = false;
+  let lastTs = null;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const halfWidth = ()=> track.scrollWidth / 2;
+
+  const normalize = ()=>{
+    const half = halfWidth();
+    if(half <= 0) return;
+    offset = ((offset % half) + half) % half;
+  };
+
+  const apply = ()=>{
+    normalize();
+    track.style.transform = `translate3d(${-offset}px,0,0)`;
+  };
+
+  const scheduleResume = ()=>{
+    userPaused = true;
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(()=>{
+      userPaused = false;
+      lastTs = null;
+    }, IDLE_MS);
+  };
+
+  const onPointerDown = (e)=>{
+    if(e.pointerType === 'mouse' && e.button !== 0) return;
+    dragging = true;
+    moved = false;
+    pointerId = e.pointerId;
+    startX = e.clientX;
+    startOffset = offset;
+    track.classList.add('dragging');
+    userPaused = true;
+    clearTimeout(resumeTimer);
+    try{ track.setPointerCapture(e.pointerId); }catch(_){}
+  };
+
+  const onPointerMove = (e)=>{
+    if(!dragging || e.pointerId !== pointerId) return;
+    const dx = e.clientX - startX;
+    if(Math.abs(dx) > 3) moved = true;
+    offset = startOffset - dx;
+    apply();
+  };
+
+  const onPointerUp = (e)=>{
+    if(!dragging || (pointerId != null && e.pointerId !== pointerId)) return;
+    dragging = false;
+    pointerId = null;
+    track.classList.remove('dragging');
+    try{ track.releasePointerCapture(e.pointerId); }catch(_){}
+    scheduleResume();
+  };
+
+  track.addEventListener('pointerdown', onPointerDown);
+  track.addEventListener('pointermove', onPointerMove);
+  track.addEventListener('pointerup', onPointerUp);
+  track.addEventListener('pointercancel', onPointerUp);
+
+  // Prevent click-through after a drag
+  track.addEventListener('click', e=>{
+    if(moved){ e.preventDefault(); e.stopPropagation(); moved = false; }
+  }, true);
+
+  viewport.addEventListener('wheel', e=>{
+    const dx = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+    if(dx === 0) return;
+    e.preventDefault();
+    offset += dx;
+    apply();
+    scheduleResume();
+  }, {passive:false});
+
+  apply();
+
+  function loop(ts){
+    if(stopped) return;
+    if(lastTs == null) lastTs = ts;
+    const dt = Math.min(0.064, (ts - lastTs) / 1000);
+    lastTs = ts;
+    if(!reduceMotion && !userPaused && !dragging){
+      offset += SPEED * dt;
+      apply();
+    }
+    RAF(loop);
+  }
+  RAF(loop);
 });
 
   return () => { stopped = true; };

@@ -532,6 +532,14 @@ function NexusPage() {
       <div className="nexus-page">
         {/* ── Hero ── */}
         <section className="nexus-hero" aria-label="NEXUS hero">
+          <div className="nexus-hero-skyline" aria-hidden="true">
+            <img
+              src="/nova_images/nexus-hero-bg.png"
+              alt=""
+              decoding="async"
+              fetchPriority="high"
+            />
+          </div>
           <div className="nexus-mesh" aria-hidden="true">
             <span className="nexus-orb nexus-orb-a" />
             <span className="nexus-orb nexus-orb-b" />
@@ -574,7 +582,16 @@ function NexusPage() {
         </section>
 
         {/* ── What is NEXUS ── */}
-        <section className="section nexus-section" id="about">
+        <section className="section nexus-section nexus-ambient" id="about">
+          <div className="nexus-ambient-bg" aria-hidden="true">
+            <img
+              src="/nova_images/nexus-bg-platform.png"
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <div className="nexus-ambient-veil" aria-hidden="true" />
           <div className="wrap nexus-manifesto">
             <div className="reveal">
               <div className="eyebrow">Platform</div>
@@ -598,7 +615,16 @@ function NexusPage() {
         </section>
 
         {/* ── Learn & certify ── */}
-        <section className="section nexus-section" id="learn" style={{ paddingTop: 0 }}>
+        <section className="section nexus-section nexus-ambient" id="learn" style={{ paddingTop: 0 }}>
+          <div className="nexus-ambient-bg" aria-hidden="true">
+            <img
+              src="/nova_images/nexus-bg-courses.png"
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <div className="nexus-ambient-veil" aria-hidden="true" />
           <div className="wrap">
             <div className="eyebrow reveal">Courses</div>
             <div className="section-head reveal">
@@ -630,7 +656,16 @@ function NexusPage() {
         </section>
 
         {/* ── Compete ── */}
-        <section className="section nexus-section" id="compete" style={{ paddingTop: 0 }}>
+        <section className="section nexus-section nexus-ambient" id="compete" style={{ paddingTop: 0 }}>
+          <div className="nexus-ambient-bg" aria-hidden="true">
+            <img
+              src="/nova_images/nexus-bg-competition.png"
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <div className="nexus-ambient-veil" aria-hidden="true" />
           <div className="wrap">
             <div className="eyebrow reveal">Competition</div>
             <div className="section-head reveal">
@@ -654,6 +689,14 @@ function NexusPage() {
 
         {/* ── Malaysia Bootcamp ── */}
         <section className="nexus-destination-chapter" id="malaysia">
+          <div className="nexus-chapter-skyline" aria-hidden="true">
+            <img
+              src="/nova_images/nexus-kl-skyline.png"
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
           <div className="nexus-chapter-mesh" aria-hidden="true" />
           <div className="wrap reveal">
             <div className="eyebrow">Flagship reward</div>
@@ -674,7 +717,16 @@ function NexusPage() {
         </section>
 
         {/* ── Startup opportunities ── */}
-        <section className="section nexus-section" id="startup">
+        <section className="section nexus-section nexus-ambient" id="startup">
+          <div className="nexus-ambient-bg" aria-hidden="true">
+            <img
+              src="/nova_images/nexus-bg-aftertrip.png"
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <div className="nexus-ambient-veil" aria-hidden="true" />
           <div className="wrap">
             <div className="eyebrow reveal">After the trip</div>
             <div className="section-head reveal">
@@ -702,7 +754,16 @@ function NexusPage() {
         </section>
 
         {/* ── Path / timeline ── */}
-        <section className="section nexus-section" id="path" style={{ paddingTop: 0 }}>
+        <section className="section nexus-section nexus-ambient" id="path" style={{ paddingTop: 0 }}>
+          <div className="nexus-ambient-bg" aria-hidden="true">
+            <img
+              src="/nova_images/nexus-bg-later.png"
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <div className="nexus-ambient-veil" aria-hidden="true" />
           <div className="wrap">
             <div className="eyebrow reveal">Trajectory</div>
             <div className="section-head reveal">
@@ -722,7 +783,16 @@ function NexusPage() {
         </section>
 
         {/* ── Who it's for ── */}
-        <section className="section nexus-section" id="audience" style={{ paddingTop: 0 }}>
+        <section className="section nexus-section nexus-ambient" id="audience" style={{ paddingTop: 0 }}>
+          <div className="nexus-ambient-bg" aria-hidden="true">
+            <img
+              src="/nova_images/nexus-bg-eligibility.png"
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <div className="nexus-ambient-veil" aria-hidden="true" />
           <div className="wrap">
             <div className="eyebrow reveal">Eligibility</div>
             <div className="section-head reveal">
@@ -745,7 +815,16 @@ function NexusPage() {
         </section>
 
         {/* ── Register ── */}
-        <section className="section nexus-section nexus-register" id="register">
+        <section className="section nexus-section nexus-register nexus-ambient" id="register">
+          <div className="nexus-ambient-bg" aria-hidden="true">
+            <img
+              src="/nova_images/nexus-bg-aftertrip.png"
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <div className="nexus-ambient-veil" aria-hidden="true" />
           <div className="wrap split">
             <div className="reveal">
               <div className="eyebrow">Edition 2026</div>

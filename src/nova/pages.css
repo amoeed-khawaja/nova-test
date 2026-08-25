@@ -214,26 +214,54 @@ body:not(.nova-cursor) .cur-ring { display: none; }
   display: flex;
   align-items: center;
   padding: clamp(96px, 11vh, 112px) 0 clamp(24px, 3.5vh, 40px);
-  overflow: visible;
+  overflow: hidden;
   color: var(--text);
   box-sizing: border-box;
+  isolation: isolate;
+}
+.nexus-hero-skyline {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.nexus-hero-skyline img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  opacity: 0.5;
+  filter: saturate(0.88) brightness(0.74) contrast(1.05);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, #000 12%, #000 78%, transparent 100%);
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, #000 12%, #000 78%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
 .nexus-mesh {
   position: absolute;
   inset: 0;
+  z-index: 1;
   pointer-events: none;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 70% 50% at 78% 18%, rgba(92, 216, 255, 0.16), transparent 55%),
-    radial-gradient(ellipse 55% 45% at 12% 72%, rgba(156, 124, 255, 0.2), transparent 50%),
-    radial-gradient(ellipse 40% 35% at 55% 40%, rgba(255, 124, 216, 0.1), transparent 60%),
-    linear-gradient(180deg, rgba(7, 7, 12, 0.25), transparent 42%, rgba(7, 7, 12, 0.55));
+    radial-gradient(ellipse 70% 50% at 78% 18%, rgba(92, 216, 255, 0.1), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 12% 72%, rgba(156, 124, 255, 0.12), transparent 50%),
+    radial-gradient(ellipse 40% 35% at 55% 40%, rgba(255, 124, 216, 0.06), transparent 60%),
+    linear-gradient(180deg, var(--void) 0%, transparent 22%, transparent 70%, var(--void) 100%),
+    linear-gradient(90deg, var(--void) 0%, transparent 12%, transparent 88%, var(--void) 100%);
 }
 .nexus-orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(52px);
-  opacity: 0.55;
+  opacity: 0.35;
   animation: nexus-breathe 10s ease-in-out infinite;
 }
 .nexus-orb-a {
@@ -276,7 +304,7 @@ body:not(.nova-cursor) .cur-ring { display: none; }
 
 .nexus-page .wrap.nexus-hero-inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: min(1360px, 100%);
   width: 100%;
   margin-left: auto;
@@ -1419,6 +1447,72 @@ body:not(.nova-cursor) .cur-ring { display: none; }
   .nexus-confetti { display: none; }
 }
 
+/* Ambient section backgrounds (Platform / Courses / Competition / later) */
+.nexus-ambient {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.nexus-ambient > .wrap,
+.nexus-ambient > .wrap.split {
+  position: relative;
+  z-index: 2;
+}
+.nexus-ambient-bg {
+  position: absolute;
+  inset: -12% 0; /* bleed past section edges for softer joins */
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.nexus-ambient-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0.5;
+  filter: saturate(0.88) brightness(0.76) contrast(1.05);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, #000 22%, #000 70%, transparent 100%);
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, #000 22%, #000 70%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+.nexus-ambient-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 65% 70% at 15% 40%, rgba(92, 216, 255, 0.04), transparent 55%),
+    radial-gradient(ellipse 55% 60% at 88% 55%, rgba(156, 124, 255, 0.05), transparent 50%),
+    linear-gradient(180deg, var(--void) 0%, transparent 28%, transparent 62%, var(--void) 100%),
+    linear-gradient(90deg, var(--void) 0%, transparent 16%, transparent 84%, var(--void) 100%);
+}
+#about .nexus-ambient-bg img { object-position: center 45%; opacity: 0.52; }
+#learn .nexus-ambient-bg img { object-position: center 40%; opacity: 0.48; }
+#compete .nexus-ambient-bg img { object-position: center 55%; opacity: 0.5; }
+#startup .nexus-ambient-bg img { object-position: center 38%; opacity: 0.5; }
+#path .nexus-ambient-bg img { object-position: center 48%; opacity: 0.46; }
+#audience .nexus-ambient-bg img { object-position: center 55%; opacity: 0.48; }
+#register .nexus-ambient-bg img { object-position: center 42%; opacity: 0.44; }
+
+/* Soften hard borders between ambient chapters so skies feel continuous */
+.nexus-page .nexus-ambient + .nexus-ambient,
+.nexus-page .nexus-destination-chapter + .nexus-ambient,
+.nexus-page .nexus-ambient + .nexus-destination-chapter {
+  border-top-color: transparent;
+}
+.nexus-destination-chapter {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+
 /* Manifesto */
 .nexus-manifesto {
   display: grid;
@@ -1555,34 +1649,77 @@ body:not(.nova-cursor) .cur-ring { display: none; }
 /* Malaysia destination chapter */
 .nexus-destination-chapter {
   position: relative;
-  padding: 100px 0;
+  padding: 120px 0;
   overflow: hidden;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  isolation: isolate;
+}
+.nexus-chapter-skyline {
+  position: absolute;
+  inset: -10% 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.nexus-chapter-skyline img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+  opacity: 0.5;
+  filter: saturate(0.88) brightness(0.74) contrast(1.05);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, #000 24%, #000 66%, transparent 100%);
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, #000 24%, #000 66%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
 .nexus-chapter-mesh {
   position: absolute;
   inset: 0;
+  z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 70% 80% at 20% 50%, rgba(92, 216, 255, 0.14), transparent 55%),
-    radial-gradient(ellipse 50% 60% at 90% 30%, rgba(156, 124, 255, 0.22), transparent 50%),
-    linear-gradient(180deg, rgba(7, 7, 12, 0.2), transparent 40%, rgba(7, 7, 12, 0.5));
+    radial-gradient(ellipse 70% 80% at 20% 50%, rgba(92, 216, 255, 0.1), transparent 55%),
+    radial-gradient(ellipse 50% 60% at 90% 30%, rgba(156, 124, 255, 0.14), transparent 50%),
+    radial-gradient(ellipse 60% 50% at 70% 70%, rgba(255, 124, 216, 0.06), transparent 55%),
+    linear-gradient(180deg, var(--void) 0%, transparent 30%, transparent 55%, var(--void) 100%),
+    linear-gradient(90deg, var(--void) 0%, transparent 16%, transparent 84%, var(--void) 100%);
 }
-.nexus-destination-chapter .wrap { position: relative; z-index: 1; max-width: 760px; }
+.nexus-destination-chapter .wrap {
+  position: relative;
+  z-index: 2;
+  max-width: min(900px, 100%);
+  overflow: visible;
+  container-type: inline-size;
+}
 .nexus-chapter-place {
   font-family: "Syne", "Space Grotesk", sans-serif;
   font-weight: 800;
-  font-size: clamp(40px, 9vw, 96px);
-  line-height: 0.9;
+  /* Fit full “MALAYSIA” inside the wrap — Syne 800 is ~8.1–8.3ch wide */
+  font-size: clamp(36px, calc((100vw - 64px) / 8.3), 88px);
+  line-height: 0.95;
   letter-spacing: -0.03em;
   margin: 12px 0 18px;
   white-space: nowrap;
-  max-width: 100%;
+  width: max-content;
+  max-width: none;
+  overflow: visible;
   background: linear-gradient(120deg, var(--nx-cyan, #00D4FF), #fff 42%, var(--nx-magenta, #FF3DAC));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+@supports (font-size: 1cqi) {
+  .nexus-chapter-place {
+    font-size: clamp(36px, calc(100cqi / 8.2), 88px);
+  }
 }
 .nexus-chapter-title {
   font-size: clamp(24px, 3.2vw, 36px);
