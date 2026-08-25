@@ -1,15 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { PageShell } from "@/components/SiteChrome";
+import { NOVA_ROLE_CODES, type NovaRole } from "@/lib/form-codes";
+import { submitRegistration } from "@/lib/submit-registration";
 
 export const Route = createFileRoute("/register")({
   head: () => ({
     meta: [
-      { title: "Register for NOVA — Students, Partners & Volunteers" },
+      { title: "Register for NOVA — Students, Partners & Ecosystem" },
       {
         name: "description",
         content:
-          "Register for NOVA, Pakistan's national innovation challenge. Apply as a student team, university, partner, sponsor, volunteer, instructor, judge, speaker or media.",
+          "Register for NOVA as a student team, university, partner, sponsor, instructor, judge, speaker or media.",
       },
       { property: "og:title", content: "Register for NOVA" },
       {
@@ -23,24 +25,64 @@ export const Route = createFileRoute("/register")({
   component: RegisterPage,
 });
 
-const roles = [
-  { v: "student", label: "Student / Team", note: "Compete in the national challenge with your university team." },
-  { v: "university", label: "University", note: "Host NOVA on your campus and bring your students into the journey." },
-  { v: "partner", label: "Partner", note: "Collaborate with NOVA across tracks, campuses or the ecosystem." },
-  { v: "sponsor", label: "Sponsor", note: "Back the national challenge and reach 300,000+ students." },
-  { v: "volunteer", label: "Volunteer", note: "Run campus activations and support event operations." },
-  { v: "instructor", label: "Instructor", note: "Teach workshops and masterclasses across the tracks." },
-  { v: "judge", label: "Judge", note: "Evaluate submissions across the regional and national rounds." },
-  { v: "speaker", label: "Speaker", note: "Share your work on the NOVA stage." },
-  { v: "media", label: "Media", note: "Cover the challenge and access the press kit." },
+const roles: { v: NovaRole; label: string; note: string }[] = [
+  {
+    v: "student",
+    label: "Student / Team",
+    note: "Compete in the national challenge with your university team.",
+  },
+  {
+    v: "university",
+    label: "University",
+    note: "Host NOVA on your campus and bring your students into the journey.",
+  },
+  {
+    v: "partner",
+    label: "Partner",
+    note: "Collaborate with NOVA across tracks, campuses or the ecosystem.",
+  },
+  {
+    v: "sponsor",
+    label: "Sponsor",
+    note: "Back the national challenge and reach 300,000+ students.",
+  },
+  {
+    v: "instructor",
+    label: "Instructor",
+    note: "Teach workshops and masterclasses across the tracks.",
+  },
+  {
+    v: "judge",
+    label: "Judge",
+    note: "Evaluate submissions across the regional and national rounds.",
+  },
+  {
+    v: "speaker",
+    label: "Speaker",
+    note: "Share your work on the NOVA stage.",
+  },
+  {
+    v: "media",
+    label: "Media",
+    note: "Cover the challenge and access the press kit.",
+  },
 ];
 
-const ORG_ROLES = ["partner", "sponsor", "media"];
-const TRACK_ROLES = ["volunteer", "instructor", "judge", "speaker"];
+const ORG_ROLES: NovaRole[] = ["partner", "sponsor", "media"];
+const TRACK_ROLES: NovaRole[] = ["instructor", "judge", "speaker"];
+
+function val(form: HTMLFormElement, id: string): string {
+  const el = form.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+    `#${CSS.escape(id)}`,
+  );
+  return el?.value.trim() ?? "";
+}
 
 function RegisterPage() {
-  const [role, setRole] = useState("student");
+  const [role, setRole] = useState<NovaRole>("student");
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const active = roles.find((r) => r.v === role);
 
   const isStudent = role === "student";
@@ -48,6 +90,55 @@ function RegisterPage() {
   const isOrg = ORG_ROLES.includes(role);
   const isTrackRole = TRACK_ROLES.includes(role);
   const isMedia = role === "media";
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    setSending(true);
+    const form = e.currentTarget;
+
+    const fields: Record<string, string> = {
+      name: val(form, "name"),
+      email: val(form, "email"),
+      phone: val(form, "phone"),
+      idea: val(form, "idea"),
+      role_label: active?.label ?? role,
+      role_code: NOVA_ROLE_CODES[role],
+    };
+
+    if (isUniversity) {
+      fields["university"] = val(form, "university");
+      fields["designation"] = val(form, "designation");
+    } else {
+      fields["organisation"] = val(form, "org");
+    }
+    if (isOrg || isUniversity) {
+      if (!fields["designation"]) fields["designation"] = val(form, "designation");
+    }
+    if (isStudent) {
+      fields["city"] = val(form, "city");
+      fields["track"] = val(form, "track");
+    }
+    if (isTrackRole) {
+      fields["track"] = val(form, "track");
+      fields["linkedin"] = val(form, "linkedin");
+    }
+    if (isMedia) {
+      fields["social"] = val(form, "social");
+    }
+
+    try {
+      await submitRegistration({
+        data: { source: "nova", role, fields },
+      });
+      setSent(true);
+      form.reset();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  }
 
   return (
     <PageShell>
@@ -68,16 +159,16 @@ function RegisterPage() {
             <div className="reveal">
               <div className="eyebrow">What happens next</div>
               <ul className="checklist">
-                <li>You'll receive a confirmation email with your track brief.</li>
+                <li>You&apos;ll receive a confirmation email with your track brief.</li>
                 <li>Student teams get the challenge pack and submission timeline.</li>
                 <li>Universities, partners and sponsors are matched with the NOVA team.</li>
                 <li>Instructors, judges and speakers are assigned to a round.</li>
-                <li>Volunteers are assigned to the nearest campus activation.</li>
+                <li>For the Malaysia flagship track, also explore NEXUS.</li>
               </ul>
               <div className="facts" style={{ marginTop: 28 }}>
                 <div className="fact">
-                  <div className="k">Eligibility</div>
-                  <div className="v">University students, Pakistan</div>
+                  <div className="k">Codes</div>
+                  <div className="v">STU · UNI · PRT · SPN · INS · JDG · SPK · MED</div>
                 </div>
                 <div className="fact">
                   <div className="k">Team size</div>
@@ -85,31 +176,27 @@ function RegisterPage() {
                 </div>
                 <div className="fact">
                   <div className="k">Fee</div>
-                  <div className="v">Free to enter</div>
+                  <div className="v">Free to join</div>
                 </div>
               </div>
             </div>
 
-            <form
-              className="form-card reveal"
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSent(true);
-              }}
-            >
+            <form className="form-card reveal" onSubmit={onSubmit}>
               <div className="field">
                 <label htmlFor="role">I AM REGISTERING AS</label>
                 <select
                   id="role"
+                  name="role"
                   value={role}
                   onChange={(e) => {
-                    setRole(e.target.value);
+                    setRole(e.target.value as NovaRole);
                     setSent(false);
+                    setError(null);
                   }}
                 >
                   {roles.map((r) => (
                     <option key={r.v} value={r.v}>
-                      {r.label}
+                      {r.label} ({NOVA_ROLE_CODES[r.v]})
                     </option>
                   ))}
                 </select>
@@ -121,50 +208,50 @@ function RegisterPage() {
               <div className="form-grid">
                 <div className="field">
                   <label htmlFor="name">FULL NAME</label>
-                  <input id="name" type="text" required />
+                  <input id="name" name="name" type="text" required />
                 </div>
 
                 {isUniversity ? (
                   <div className="field">
                     <label htmlFor="university">UNIVERSITY NAME</label>
-                    <input id="university" type="text" required />
+                    <input id="university" name="university" type="text" required />
                   </div>
                 ) : (
                   <div className="field">
                     <label htmlFor="org">
                       {isStudent ? "UNIVERSITY / ORGANISATION" : "ORGANISATION"}
                     </label>
-                    <input id="org" type="text" required />
+                    <input id="org" name="org" type="text" required />
                   </div>
                 )}
 
                 {(isUniversity || isOrg) && (
                   <div className="field">
                     <label htmlFor="designation">DESIGNATION</label>
-                    <input id="designation" type="text" required />
+                    <input id="designation" name="designation" type="text" required />
                   </div>
                 )}
 
                 <div className="field">
                   <label htmlFor="email">EMAIL</label>
-                  <input id="email" type="email" required />
+                  <input id="email" name="email" type="email" required />
                 </div>
                 <div className="field">
                   <label htmlFor="phone">PHONE</label>
-                  <input id="phone" type="tel" required />
+                  <input id="phone" name="phone" type="tel" required />
                 </div>
 
                 {isStudent && (
                   <div className="field">
                     <label htmlFor="city">CITY</label>
-                    <input id="city" type="text" />
+                    <input id="city" name="city" type="text" />
                   </div>
                 )}
 
                 {(isStudent || isTrackRole) && (
                   <div className="field">
                     <label htmlFor="track">PREFERRED TRACK</label>
-                    <select id="track" defaultValue="ai" required={isTrackRole}>
+                    <select id="track" name="track" defaultValue="ai" required={isTrackRole}>
                       <option value="ai">AI</option>
                       <option value="climate">Climate</option>
                       <option value="web3">Web3</option>
@@ -176,14 +263,20 @@ function RegisterPage() {
                 {isTrackRole && (
                   <div className="field">
                     <label htmlFor="linkedin">LINKEDIN PROFILE URL</label>
-                    <input id="linkedin" type="url" placeholder="https://linkedin.com/in/…" required />
+                    <input
+                      id="linkedin"
+                      name="linkedin"
+                      type="url"
+                      placeholder="https://linkedin.com/in/…"
+                      required
+                    />
                   </div>
                 )}
 
                 {isMedia && (
                   <div className="field">
                     <label htmlFor="social">ORGANISATION SOCIAL MEDIA PROFILE</label>
-                    <input id="social" type="url" placeholder="https://…" required />
+                    <input id="social" name="social" type="url" placeholder="https://…" required />
                   </div>
                 )}
               </div>
@@ -194,13 +287,18 @@ function RegisterPage() {
                     ? "TELL US ABOUT YOUR IDEA OR INTEREST"
                     : "YOUR QUERY — WHAT ARE YOU LOOKING FOR FROM NOVA?"}
                 </label>
-                <textarea id="idea" required />
+                <textarea id="idea" name="idea" required />
               </div>
 
-              <button className="btn btn-primary magnet" type="submit">
-                Submit registration
+              <button className="btn btn-primary magnet" type="submit" disabled={sending}>
+                {sending ? "Sending…" : "Submit registration"}
               </button>
-              {sent && (
+              {error && (
+                <p style={{ marginTop: 14, color: "#FF7C9A", fontSize: 13 }} role="alert">
+                  {error}
+                </p>
+              )}
+              {sent && !error && (
                 <p style={{ marginTop: 14, color: "var(--cyan)", fontSize: 13 }}>
                   Received — the NOVA team will follow up by email.
                 </p>
@@ -209,8 +307,11 @@ function RegisterPage() {
           </div>
 
           <div className="story-nav">
+            <Link className="btn btn-ghost magnet" to="/nexus">
+              Also interested in NEXUS (Malaysia)?
+            </Link>
             <Link className="btn btn-ghost magnet" to="/partner">
-              Registering an organisation instead?
+              Looking at sponsorship tiers?
             </Link>
           </div>
         </div>

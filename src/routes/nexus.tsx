@@ -3,11 +3,13 @@ import {
   useEffect,
   useRef,
   useState,
+  type FormEvent,
   type KeyboardEvent,
   type MouseEvent,
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { PageShell } from "@/components/SiteChrome";
+import { submitRegistration } from "@/lib/submit-registration";
 
 const ticketChips = [
   "Bootcamp",
@@ -432,6 +434,7 @@ function NexusTripPass() {
       return () => window.clearTimeout(t);
     }
     if (!allDone) prevAllDone.current = false;
+    return undefined;
   }, [allDone]);
 
   function toggleStage(id: string) {
@@ -508,6 +511,8 @@ function NexusTripPass() {
 
 function NexusPage() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const path = document.querySelector(".nexus-path");
@@ -526,6 +531,31 @@ function NexusPage() {
     io.observe(path);
     return () => io.disconnect();
   }, []);
+
+  async function onRegisterSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    setSending(true);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const fields: Record<string, string> = {};
+    fd.forEach((v, k) => {
+      fields[k] = String(v).trim();
+    });
+    fields["agree"] = fd.get("agree") ? "yes" : "no";
+
+    try {
+      await submitRegistration({
+        data: { source: "nexus", fields },
+      });
+      setSent(true);
+      form.reset();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  }
 
   return (
     <PageShell>
@@ -832,8 +862,8 @@ function NexusPage() {
                 Apply to NEXUS
               </h2>
               <p style={{ color: "var(--dim)", maxWidth: 420 }}>
-                Tell us who you are and why you want this orbit. The NOVA team will email
-                next steps — no backend automation yet; this form confirms intent on-device.
+                Tell us who you are and why you want this orbit. Submissions email the NOVA
+                team with subject <span className="mono">NOVA-NEXUS REG</span>.
               </p>
               <ul className="checklist">
                 <li>Student-focused application (not the multi-role /register page)</li>
@@ -860,13 +890,7 @@ function NexusPage() {
                 </button>
               </div>
             ) : (
-              <form
-                className="form-card reveal"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSent(true);
-                }}
-              >
+              <form className="form-card reveal" onSubmit={onRegisterSubmit}>
                 <div className="form-grid">
                   <div className="field">
                     <label htmlFor="nx-name">FULL NAME</label>
@@ -924,9 +948,14 @@ function NexusPage() {
                     <span>I agree to be contacted by the NOVA team about NEXUS.</span>
                   </label>
                 </div>
-                <button className="btn btn-primary magnet" type="submit">
-                  Submit NEXUS application
+                <button className="btn btn-primary magnet" type="submit" disabled={sending}>
+                  {sending ? "Sending…" : "Submit NEXUS application"}
                 </button>
+                {error && (
+                  <p style={{ marginTop: 14, color: "#FF7C9A", fontSize: 13 }} role="alert">
+                    {error}
+                  </p>
+                )}
               </form>
             )}
           </div>

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { PageShell } from "@/components/SiteChrome";
+import { submitRegistration } from "@/lib/submit-registration";
 
 export const Route = createFileRoute("/partner")({
   head: () => ({
@@ -68,6 +69,34 @@ const tiers = [
 
 function PartnerPage() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    setSending(true);
+    const form = e.currentTarget;
+    const fields = {
+      name: (form.elements.namedItem("pname") as HTMLInputElement).value.trim(),
+      email: (form.elements.namedItem("pemail") as HTMLInputElement).value.trim(),
+      organisation: (form.elements.namedItem("porg") as HTMLInputElement).value.trim(),
+      tier: (form.elements.namedItem("ptier") as HTMLSelectElement).value.trim(),
+      goals: (form.elements.namedItem("pgoals") as HTMLTextAreaElement).value.trim(),
+      role_code: "PRT",
+    };
+    try {
+      await submitRegistration({
+        data: { source: "partner", role: "partner", fields },
+      });
+      setSent(true);
+      form.reset();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  }
 
   return (
     <PageShell>
@@ -146,29 +175,23 @@ function PartnerPage() {
             </ul>
           </div>
 
-          <form
-            className="form-card reveal"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-            }}
-          >
+          <form className="form-card reveal" onSubmit={onSubmit}>
             <div className="form-grid">
               <div className="field">
                 <label htmlFor="pname">CONTACT NAME</label>
-                <input id="pname" type="text" required />
+                <input id="pname" name="pname" type="text" required />
               </div>
               <div className="field">
                 <label htmlFor="pemail">WORK EMAIL</label>
-                <input id="pemail" type="email" required />
+                <input id="pemail" name="pemail" type="email" required />
               </div>
               <div className="field">
                 <label htmlFor="porg">ORGANISATION</label>
-                <input id="porg" type="text" required />
+                <input id="porg" name="porg" type="text" required />
               </div>
               <div className="field">
                 <label htmlFor="ptier">INTERESTED TIER</label>
-                <select id="ptier" defaultValue="Track Partner">
+                <select id="ptier" name="ptier" defaultValue="Track Partner">
                   {tiers.map((t) => (
                     <option key={t.name} value={t.name}>
                       {t.name}
@@ -180,14 +203,19 @@ function PartnerPage() {
             </div>
             <div className="field">
               <label htmlFor="pgoals">WHAT ARE YOU HOPING TO GET OUT OF NOVA?</label>
-              <textarea id="pgoals" required />
+              <textarea id="pgoals" name="pgoals" required />
             </div>
-            <button className="btn btn-primary magnet" type="submit">
-              Request the partnership deck
+            <button className="btn btn-primary magnet" type="submit" disabled={sending}>
+              {sending ? "Sending…" : "Request the partnership deck"}
             </button>
-            {sent && (
+            {error && (
+              <p style={{ marginTop: 14, color: "#FF7C9A", fontSize: 13 }} role="alert">
+                {error}
+              </p>
+            )}
+            {sent && !error && (
               <p style={{ marginTop: 14, color: "var(--cyan)", fontSize: 13 }}>
-                Received — we'll send the deck and follow up shortly.
+                Received — we&apos;ll send the deck and follow up shortly.
               </p>
             )}
           </form>

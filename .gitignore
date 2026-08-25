@@ -16,6 +16,11 @@ dist-ssr
 .nitro
 *.local
 
+# Env (keep .env.example committed; secrets stay local / Vercel)
+.env
+.env.*
+!.env.example
+
 # Vercel
 .vercel
 
