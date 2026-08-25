@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import nodemailer from "nodemailer";
 import { z } from "zod";
 import { NEXUS_SUBJECT, novaSubjectForRole } from "./form-codes";
 
@@ -11,7 +10,6 @@ const payloadSchema = z.object({
 
 export type RegistrationPayload = z.infer<typeof payloadSchema>;
 
-/** Reads the same keys you already have on Vercel. */
 function collectRecipients(): string[] {
   const keys = ["RECIPIENT_EMAIL", "RECIPIENT_EMAIL2", "RECIPIENT_EMAIL3"] as const;
   const out: string[] = [];
@@ -50,9 +48,7 @@ function buildBody(data: RegistrationPayload): string {
 export const submitRegistration = createServerFn({ method: "POST" })
   .validator(payloadSchema)
   .handler(async ({ data }) => {
-    // Read per-request (required for serverless / Vercel)
     const gmailUser = process.env["GMAIL_USER"]?.trim();
-    // App passwords are often copied with spaces — Gmail accepts either, normalize to none
     const gmailPass = process.env["GMAIL_APP_PASSWORD"]?.replace(/\s+/g, "")?.trim();
     const sender = process.env["SENDER_EMAIL"]?.trim() || gmailUser;
     const recipients = collectRecipients();
@@ -85,22 +81,17 @@ export const submitRegistration = createServerFn({ method: "POST" })
     const text = buildBody(data);
     const replyTo = data.fields["email"]?.trim();
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: gmailUser,
-        pass: gmailPass,
-      },
-    });
+    // Dynamic import keeps nodemailer off the client bundle (prevents site crash).
+    const { sendGmailMail } = await import("./send-mail.server");
 
     try {
-      const info = await transporter.sendMail({
+      const info = await sendGmailMail({
         from: sender,
-        to: recipients.join(", "),
+        to: recipients,
         subject,
         text,
+        user: gmailUser,
+        pass: gmailPass,
         ...(replyTo ? { replyTo } : {}),
       });
       console.info("[submitRegistration] sent", {
