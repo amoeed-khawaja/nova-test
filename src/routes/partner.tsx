@@ -10,12 +10,12 @@ export const Route = createFileRoute("/partner")({
       {
         name: "description",
         content:
-          "Partner with NOVA to reach 300,000+ students across 150+ universities in Pakistan. Sponsorship tiers, university partnerships and ecosystem collaborations.",
+          "Partner with NOVA to reach 2,000,000+ students across 30+ universities in Pakistan. Sponsorship tiers, university partnerships and ecosystem collaborations.",
       },
       { property: "og:title", content: "Become a NOVA Partner or Sponsor" },
       {
         property: "og:description",
-        content: "Reach 300,000+ students across 150+ Pakistani universities through NOVA.",
+        content: "Reach 2,000,000+ students across 30+ Pakistani universities through NOVA.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -114,11 +114,11 @@ function PartnerPage() {
           <div className="facts reveal">
             <div className="fact">
               <div className="k">Students reached</div>
-              <div className="v">300,000+</div>
+              <div className="v">2,000,000+</div>
             </div>
             <div className="fact">
               <div className="k">Universities</div>
-              <div className="v">150+</div>
+              <div className="v">30+</div>
             </div>
             <div className="fact">
               <div className="k">Journey stages</div>

@@ -1,6 +1,50 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 
+const LINKEDIN = "https://www.linkedin.com/company/novacamp-io/";
+const INSTAGRAM = "https://www.instagram.com/novacamp.io?igsi=dDE2b3lnaXhtcDNn";
+
+function LinkedInIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+      <path d="M6.94 8.5H3.56V20H6.94V8.5ZM5.25 7.02C6.36 7.02 7.25 6.13 7.25 5.02C7.25 3.91 6.36 3 5.25 3C4.14 3 3.25 3.91 3.25 5.02C3.25 6.13 4.14 7.02 5.25 7.02ZM20.44 20H20.45V13.6C20.45 10.47 19.77 8.06 16.11 8.06C14.35 8.06 13.17 9.03 12.68 9.94H12.63V8.5H9.4V20H12.78V14.19C12.78 12.66 13.07 11.18 14.97 11.18C16.84 11.18 16.87 12.93 16.87 14.29V20H20.44Z" />
+    </svg>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+      <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 2.2A2.8 2.8 0 1 1 9.2 12 2.8 2.8 0 0 1 12 9.2zm5.35-3.45a1.15 1.15 0 1 0 1.15 1.15 1.15 1.15 0 0 0-1.15-1.15z" />
+    </svg>
+  );
+}
+
+function SocialLinks() {
+  return (
+    <div className="social-row">
+      <a
+        className="social-icon magnet"
+        href={LINKEDIN}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="NOVA on LinkedIn"
+      >
+        <LinkedInIcon />
+      </a>
+      <a
+        className="social-icon magnet"
+        href={INSTAGRAM}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="NOVA on Instagram"
+      >
+        <InstagramIcon />
+      </a>
+    </div>
+  );
+}
+
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   return (
@@ -8,8 +52,14 @@ export function SiteHeader() {
       <header>
         <nav className="pillnav">
           <Link className="logo magnet" to="/">
-            <span className="orb" />
-            NOVA
+            <img
+              className="logo-mark"
+              src="/nova_images/Nova_logo.jpeg"
+              alt="NOVA"
+              width={28}
+              height={28}
+            />
+            <span className="logo-word">NOVA</span>
           </Link>
           <a className="link magnet" href="/#journey">
             Journey
@@ -56,7 +106,12 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
-  return <footer>© 2026 NOVA · National Innovation Platform · Pakistan</footer>;
+  return (
+    <footer className="site-footer">
+      <SocialLinks />
+      <div>© 2026 NOVA · National Innovation Platform · Pakistan</div>
+    </footer>
+  );
 }
 
 /** Shared page shell: background glow layer + header + footer. */

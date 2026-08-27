@@ -44,7 +44,7 @@ const roles: { v: NovaRole; label: string; note: string }[] = [
   {
     v: "sponsor",
     label: "Sponsor",
-    note: "Back the national challenge and reach 300,000+ students.",
+    note: "Back the national challenge and reach 2,000,000+ students.",
   },
   {
     v: "instructor",
