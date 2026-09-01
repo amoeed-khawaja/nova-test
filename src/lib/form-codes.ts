@@ -19,4 +19,4 @@ export function novaSubjectForRole(role: string): string {
   return code ? `NOVA REG · ${code}` : "NOVA REG";
 }
 
-export const NEXUS_SUBJECT = "NOVA-NEXUS REG";
+export const FELLOWSHIP_SUBJECT = "NOVA-FELLOWSHIP REG";

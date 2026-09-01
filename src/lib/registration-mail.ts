@@ -1,6 +1,6 @@
-import { NEXUS_SUBJECT, novaSubjectForRole } from "./form-codes";
+import { FELLOWSHIP_SUBJECT, novaSubjectForRole } from "./form-codes";
 
-export type RegistrationSource = "nova" | "nexus" | "partner" | "contact";
+export type RegistrationSource = "nova" | "fellowship" | "partner" | "contact";
 
 export type RegistrationPayload = {
   source: RegistrationSource;
@@ -8,7 +8,7 @@ export type RegistrationPayload = {
   fields: Record<string, string>;
 };
 
-const SOURCES = new Set<RegistrationSource>(["nova", "nexus", "partner", "contact"]);
+const SOURCES = new Set<RegistrationSource>(["nova", "fellowship", "partner", "contact"]);
 
 export function collectRecipients(): string[] {
   const keys = ["RECIPIENT_EMAIL", "RECIPIENT_EMAIL2", "RECIPIENT_EMAIL3"] as const;
@@ -25,7 +25,7 @@ export function envFlag(name: string): boolean {
 }
 
 export function buildSubject(source: RegistrationSource, role?: string): string {
-  if (source === "nexus") return NEXUS_SUBJECT;
+  if (source === "fellowship") return FELLOWSHIP_SUBJECT;
   if (source === "nova") return novaSubjectForRole(role ?? "");
   if (source === "partner") return "NOVA REG · PRT";
   return "NOVA CONTACT";

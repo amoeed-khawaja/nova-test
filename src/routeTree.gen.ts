@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FellowshipRouteImport } from './routes/fellowship'
 import { Route as NexusRouteImport } from './routes/nexus'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -20,6 +21,11 @@ import { Route as StorySlugRouteImport } from './routes/story.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FellowshipRoute = FellowshipRouteImport.update({
+  id: '/fellowship',
+  path: '/fellowship',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NexusRoute = NexusRouteImport.update({
@@ -55,6 +61,7 @@ const StorySlugRoute = StorySlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/fellowship': typeof FellowshipRoute
   '/nexus': typeof NexusRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/fellowship': typeof FellowshipRoute
   '/nexus': typeof NexusRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
@@ -74,6 +82,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/fellowship': typeof FellowshipRoute
   '/nexus': typeof NexusRoute
   '/partner': typeof PartnerRoute
   '/register': typeof RegisterRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/fellowship'
     | '/nexus'
     | '/partner'
     | '/register'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/fellowship'
     | '/nexus'
     | '/partner'
     | '/register'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/fellowship'
     | '/nexus'
     | '/partner'
     | '/register'
@@ -113,6 +125,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FellowshipRoute: typeof FellowshipRoute
   NexusRoute: typeof NexusRoute
   PartnerRoute: typeof PartnerRoute
   RegisterRoute: typeof RegisterRoute
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fellowship': {
+      id: '/fellowship'
+      path: '/fellowship'
+      fullPath: '/fellowship'
+      preLoaderRoute: typeof FellowshipRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nexus': {
@@ -177,6 +197,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FellowshipRoute: FellowshipRoute,
   NexusRoute: NexusRoute,
   PartnerRoute: PartnerRoute,
   RegisterRoute: RegisterRoute,

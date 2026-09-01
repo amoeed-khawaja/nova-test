@@ -167,7 +167,7 @@ function RegisterPage() {
                 <li>Student teams get the challenge pack and submission timeline.</li>
                 <li>Universities, partners and sponsors are matched with the NOVA team.</li>
                 <li>Instructors, judges and speakers are assigned to a round.</li>
-                <li>For the Malaysia flagship track, also explore NEXUS.</li>
+                <li>For the Malaysia flagship track, also explore Fellowship.</li>
               </ul>
               <div className="facts" style={{ marginTop: 28 }}>
                 <div className="fact">
@@ -328,8 +328,8 @@ function RegisterPage() {
           </div>
 
           <div className="story-nav">
-            <Link className="btn btn-ghost magnet" to="/nexus">
-              Also interested in NEXUS (Malaysia)?
+            <Link className="btn btn-ghost magnet" to="/fellowship">
+              Also interested in Fellowship (Malaysia)?
             </Link>
             <Link className="btn btn-ghost magnet" to="/partner">
               Looking at sponsorship tiers?
